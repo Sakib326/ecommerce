@@ -21,4 +21,9 @@ class Book extends Model
     ];
 
     // Eloquent relationships, if any
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

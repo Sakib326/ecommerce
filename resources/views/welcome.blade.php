@@ -26,25 +26,79 @@
       <div class="header-1">
         <a href="#" class="logo"><i class="fas fa-book"></i>bookHouse</a>
 
-        <form action="" class="search-form">
-          <input
-            type="search"
-            name=""
-            placeholder="search here..."
-            id="search-box"
-          />
-          <label for="search-box" class="fas fa-search"></label>
-        </form>
+       <form action="#" class="search-form" id="search-form">
+    <input
+        type="search"
+        name="search"
+        placeholder="search here..."
+        id="search-box"
+    />
+    <label for="search-box" class="fas fa-search"></label>
+</form>
 
-        <div class="icons">
-          <div id="search-btn" class="fas fa-search"></div>
+<div id="search-results"></div>
+
+<div class="icons">
+    <div id="search-btn" class="fas fa-search"></div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchForm = document.getElementById('search-form');
+        var searchResultsContainer = document.getElementById('search-results');
+        var searchBtn = document.getElementById('search-btn');
+
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            performSearch();
+        });
+
+        searchBtn.addEventListener('click', function () {
+            performSearch();
+        });
+
+        function performSearch() {
+            var searchBox = document.getElementById('search-box');
+            var searchTerm = searchBox.value;
+
+            // Perform an AJAX request to the server to get search results
+            fetch('/search?query=' + encodeURIComponent(searchTerm), {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the search results
+                displaySearchResults(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
+
+        function displaySearchResults(results) {
+            // Clear previous search results
+            searchResultsContainer.innerHTML = '';
+
+            // Display the new search results
+            results.forEach(result => {
+                var resultItem = document.createElement('div');
+                resultItem.textContent = result.title; // Modify this based on your actual result structure
+                searchResultsContainer.appendChild(resultItem);
+            });
+        }
+    });
+</script>
+
          
          
 
  @if (Route::has('login'))
                     @auth
                         <a href="/profile" class="fas fa-user"></a>
-                         <a href="#" class="fas fa-heart"></a>
           <a href="#" class="fas fa-shopping-cart"></a>
              <button type="button" style="padding:8px;"><span><form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -95,44 +149,6 @@
     </nav>
 
     <!--bottom navbar end-->
-
-    <!--login form-->
-
-    <div class="login-form-container">
-      <div id="close-login-btn" class="fas fa-times"></div>
-
-      <form action="">
-        <h3>sign in</h3>
-        <span>username</span>
-        <input
-          type="email"
-          name=""
-          class="box"
-          placeholder="enter your email"
-          id=""
-        />
-        <span>password</span>
-        <input
-          type="password"
-          name=""
-          class="box"
-          placeholder="enter your password"
-          id=""
-        />
-        <div class="checkbox">
-          <input type="checkbox" name="" id="remember-me" />
-          <label for="remember-me">remember me</label>
-        </div>
-
-        <input type="submit" value="sign in" class="btn" />
-        <p>
-          forget password ? <a href="sanaullahsdoc@gmail.com">click here</a>
-        </p>
-        <p>don't have an account ? <a href="registration.html">creat one</a></p>
-      </form>
-    </div>
-
-    <!--login form end-->
 
     <!--home section-->
 
@@ -211,20 +227,64 @@
             <div class="swiper-wrapper">
                 @foreach ($books as $book)
                     <div class="swiper-slide box">
-                        <div class="icons">
-                            <a href="#" class="fas fa-heart"></a>
-                        </div>
                         <div class="image">
                             <img src="{{ asset($book->image_url) }}" alt="{{ $book->title }}" />
                         </div>
                         <div class="content">
                             <h3>{{ $book->title }}</h3>
                             <div class="price">${{ $book->price }} <span>${{ $book->original_price }}</span></div>
-                            <a href="#" class="btn">add to cart</a>
+                            <a href="#" class="btn addToCart" data-book-id="{{ $book->id }}">add to cart</a>
                         </div>
                     </div>
                 @endforeach
             </div>
+            <script>
+   document.addEventListener('DOMContentLoaded', function () {
+    // Get all elements with the class 'addToCart'
+    var addToCartButtons = document.querySelectorAll('.addToCart');
+
+    // Loop through each button
+    addToCartButtons.forEach(function (button) {
+        // Add a click event listener to each button
+        button.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default behavior of the anchor tag
+
+            // Get the book ID from the data attribute
+            var bookId = button.getAttribute('data-book-id');
+
+            // Send an AJAX request to the server
+            addToCart(bookId);
+        });
+    });
+
+    // Function to send the AJAX request
+    function addToCart(bookId) {
+        // You can add additional logic here, such as showing a loading spinner
+
+        // Perform the AJAX request
+        fetch('/add-to-cart/' + bookId, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response, e.g., show a success message
+            console.log(data);
+            alert(data.message); // You can replace this with your own success handling
+        })
+        .catch(error => {
+            // Handle errors, e.g., show an error message
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.'); // You can replace this with your own error handling
+        });
+    }
+});
+
+</script>
+
 
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>

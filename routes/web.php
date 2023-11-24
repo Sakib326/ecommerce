@@ -3,8 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\SubscribeController;
+use App\Http\Controllers\SearchController;
 
 
 /*
@@ -21,6 +22,12 @@ use App\Http\Controllers\SubscribeController;
 
 Route::post('/subscribe', [SubscribeController::class, 'subscribe'])->name('subscribe');
 
+Route::get('/search', [SearchController::class, 'index']);
+
+
+Route::post('/add-to-cart/{book}', [CartController::class, 'addToCart'])->name('addToCart');
+
+Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
