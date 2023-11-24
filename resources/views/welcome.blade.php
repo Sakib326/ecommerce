@@ -278,7 +278,7 @@
         .catch(error => {
             // Handle errors, e.g., show an error message
             console.error('Error:', error);
-            alert('An error occurred. Please try again.'); // You can replace this with your own error handling
+            alert('Only registered user can add to cart'); // You can replace this with your own error handling
         });
     }
 });
