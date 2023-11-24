@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\SubscribeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+ Route::get('/', [BookController::class, 'index'])->name('book');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::post('/subscribe', [SubscribeController::class, 'subscribe'])->name('subscribe');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

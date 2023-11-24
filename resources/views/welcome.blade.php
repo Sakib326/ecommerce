@@ -38,12 +38,36 @@
 
         <div class="icons">
           <div id="search-btn" class="fas fa-search"></div>
-          <a href="#" class="fas fa-heart"></a>
+         
+         
+
+ @if (Route::has('login'))
+                    @auth
+                        <a href="/profile" class="fas fa-user"></a>
+                         <a href="#" class="fas fa-heart"></a>
           <a href="#" class="fas fa-shopping-cart"></a>
-          <div id="login-btn" class="fas fa-user"></div>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Logout
-          </button>
+             <button type="button" style="padding:8px;"><span><form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form></span></button>
+
+                    @else
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                        @endif
+                    @endauth
+            @endif
+
+
+
+     
         </div>
       </div>
 
@@ -112,30 +136,31 @@
 
     <!--home section-->
 
-    <section class="home" id="home">
-      <div class="row">
+<section class="home" id="home">
+    <div class="row">
         <div class="content">
-          <h3>upto 75% 0ff</h3>
+            <h3>upto 75% off</h3>
           <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore
-            eius excepturi eos totam ad a ea quidem repellat ipsum voluptatem?
-          </p>
-          <a href="#" class="btn">shop now</a>
+    Discover new worlds and ideas with our carefully curated collection of books. From thrilling adventures to
+    enlightening insights, find your next favorite read. Explore the joy of reading today!
+</p>
+            <a href="/#featured" class="btn">shop now</a>
         </div>
 
         <div class="books-slider">
-          <div class="wraper">
-            <a href="#"><img src="image/book-1.png" alt="" /></a>
-            <a href="#"><img src="image/book-2.png" alt="" /></a>
-            <a href="#"><img src="image/book-3.png" alt="" /></a>
-            <a href="#"><img src="image/book-4.png" alt="" /></a>
-            <a href="#"><img src="image/book-5.png" alt="" /></a>
-            <a href="#"><img src="image/book-6.png" alt="" /></a>
-          </div>
-          <img src="image/stand.png" class="stand" alt="" />
+            <div class="wrapper">
+                @foreach ($books->take(6) as $book)
+                    <a href="#">
+                        <img src="{{ asset($book->image_url) }}" alt="{{ $book->title }}" />
+                    </a>
+                @endforeach
+            </div>
+            <img src="image/stand.png" class="stand" alt="" />
         </div>
-      </div>
-    </section>
+    </div>
+</section>
+
+
 
     <!--home section end-->
 
@@ -180,389 +205,138 @@
     <!--featured section-->
 
     <section class="featured" id="featured">
-      <h1 class="heading"><span>featured books</span></h1>
+        <h1 class="heading"><span>featured books</span></h1>
 
-      <div class="swiper featured-slider">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
+        <div class="swiper featured-slider">
+            <div class="swiper-wrapper">
+                @foreach ($books as $book)
+                    <div class="swiper-slide box">
+                        <div class="icons">
+                            <a href="#" class="fas fa-heart"></a>
+                        </div>
+                        <div class="image">
+                            <img src="{{ asset($book->image_url) }}" alt="{{ $book->title }}" />
+                        </div>
+                        <div class="content">
+                            <h3>{{ $book->title }}</h3>
+                            <div class="price">${{ $book->price }} <span>${{ $book->original_price }}</span></div>
+                            <a href="#" class="btn">add to cart</a>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-            <div class="image">
-              <img src="image/book-1.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
 
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-              <img src="image/book-2.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
-
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-              <img src="image/book-3.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
-
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-              <img src="image/book-4.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
-
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-              <img src="image/book-5.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
-
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-              <img src="image/book-6.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
-
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-              <img src="image/book-7.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
-
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-              <img src="image/book-8.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
-
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-              <img src="image/book-9.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
-
-          <div class="swiper-slide box">
-            <div class="icons">
-              <a href="#" class="fas fa-search"></a>
-              <a href="#" class="fas fa-heart"></a>
-              <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-              <img src="image/book-10.png" alt="" />
-            </div>
-            <div class="content">
-              <h3>featured books</h3>
-              <div class="price">$15.99 <span>$20.99</span></div>
-              <a href="#" class="btn">add to cart</a>
-            </div>
-          </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
-
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-      </div>
     </section>
 
     <!--featured section end-->
 
     <!--newsletter section-->
 
-    <section class="newsletter">
-      <form action="">
+
+<section class="newsletter">
+    <form id="subscribeForm" action="{{ route('subscribe') }}" method="POST">
+        @csrf
         <h3>subscribe for latest updates</h3>
-        <input
-          type="email"
-          name=""
-          placeholder="enter your email"
-          id=""
-          class="box"
-        />
+        <input type="email" name="email" placeholder="enter your email" class="box" required />
         <input type="submit" value="subscribe" class="btn" />
-      </form>
-    </section>
+    </form>
+</section>
+
+<script>
+    document.getElementById('subscribeForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        subscribe(); // Call the function to handle the AJAX submission
+    });
+
+  function subscribe() {
+    var form = document.getElementById('subscribeForm');
+    var submitButton = form.querySelector('input[type="submit"]');
+    var formData = new FormData(form);
+
+    // Disable the submit button to prevent multiple submissions
+    submitButton.setAttribute('disabled', 'disabled');
+
+    // Perform the AJAX request
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response
+        console.log(data);
+
+        // Check for success
+        if (data.success) {
+            alert(data.message); // Success message
+            // Clear input fields
+            form.reset();
+        } else {
+            alert('An error occurred. Please try again.'); // Error message
+        }
+
+        // Re-enable the submit button
+        submitButton.removeAttribute('disabled');
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.'); // Error message
+
+        // Re-enable the submit button
+        submitButton.removeAttribute('disabled');
+    });
+}
+
+</script>
+
+
+
+
 
     <!--newsletter section section end-->
 
     <!--arrivals section-->
 
     <section class="arrivals" id="arrivals">
-      <h1 class="heading"><span>new arrivals</span></h1>
+    <h1 class="heading"><span>new arrivals</span></h1>
 
-      <div class="swiper arrivals-slider">
+    <div class="swiper arrivals-slider">
         <div class="swiper-wrapper">
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-1.png" alt="" />
-            </div>
+            @foreach ($books as $book)
+                <a href="#" class="swiper-slide box">
+                    <div class="image">
+                        <img src="{{ asset($book->image_url) }}" alt="{{ $book->title }}" />
+                    </div>
 
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
-
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-2.png" alt="" />
-            </div>
-
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
-
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-3.png" alt="" />
-            </div>
-
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
-
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-4.png" alt="" />
-            </div>
-
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
-
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-5.png" alt="" />
-            </div>
-
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
+                    <div class="content">
+                        <h3>{{ $book->title }}</h3>
+                        <div class="price">${{ $book->price }}<span>${{ $book->original_price }}</span></div>
+                        <div class="stars">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $book->rating)
+                                    <i class="fas fa-star"></i>
+                                @else
+                                    <i class="fas fa-star-half-alt"></i>
+                                @endif
+                            @endfor
+                        </div>
+                    </div>
+                </a>
+            @endforeach
         </div>
-      </div>
+    </div>
+</section>
 
-      <div class="swiper arrivals-slider">
-        <div class="swiper-wrapper">
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-6.png" alt="" />
-            </div>
 
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
 
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-7.png" alt="" />
-            </div>
 
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
-
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-8.png" alt="" />
-            </div>
-
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
-
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-9.png" alt="" />
-            </div>
-
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
-
-          <a href="#" class="swiper-slide box">
-            <div class="image">
-              <img src="image/book-10.png" alt="" />
-            </div>
-
-            <div class="content">
-              <h3>new arrivals</h3>
-              <div class="price">$15.99<span>$20.99</span></div>
-              <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
 
     <!--arrivals section end-->
 
